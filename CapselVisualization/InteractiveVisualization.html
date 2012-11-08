@@ -1,38 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="description" content="Place your description here" />
-<meta name="keywords" content="put, your, keyword, here" />
-<meta name="author" content="Templates.com - website templates provider" />
-<link href="../style.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery-1.3.2.min.js" type="text/javascript"></script>
-<script src="js/cufon-yui.js" type="text/javascript"></script>
-<script src="js/cufon-replace.js" type="text/javascript"></script>
-<script src="js/cufon-replace.js" type="text/javascript"></script>
-<script src="js/Bauhaus_Md_BT_400.font.js" type="text/javascript"></script>
-		<title>D3 Test</title>
+<html>
+    <head>
+        <title>D3 Test</title>
 		<link href="style.css" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="d3/d3.v2.js"></script>
-</head>
-<body id="page1">
-<div id="main">
-	<div id="header">
-		<ul class="site-nav">
-			<li><a href="../index.html">Home</a></li>
-			<li><a href="../about-me.html">About Me</a></li>
-			<li><a href="http://globilluthesis.wordpress.com/">Thesis blog</a></li>
-			<li><a href="CapselVisualization/InteractiveVisualization.html"  class="act">Capsel Visualization</a></li>
-		</ul>
-	</div>
-		<header>
-		<h1>Capita Selecta: Data visualization</h1>
-		</header>
-		<p>
-		The x-axis contains the weight of the person and goes from 40 to 100 kg. <br>
-		The y-axis contains the height of the person and goes from 150 to 220 cm. <br>
-		The radius of the circles are the persons shoesize.
-		</p>
+    </head>
+    <body>
+		<h1>Capita Selecta: Data visualisation</h1>
 		<div><button id="button">Reset</button></div>
 		<script type="text/javascript">
 			var w = 600;
@@ -132,7 +105,6 @@
 				.append("svg")
 				.attr("width", w)
 				.attr("height", h);
-				
 			svg.selectAll("circle")
 				.data(dataset)
 				.enter()
@@ -310,5 +282,10 @@
 				}
 			});
 		</script>
+		<p>
+		The x-axis contains the weight of the person and goes from 40 to 100 kg. <br>
+		The y-axis contains the height of the person and goes from 150 to 220 cm. <br>
+		The radius of the circles are the persons shoesize.
+		</p>
     </body>
 </html>  
