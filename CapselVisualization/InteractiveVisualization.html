@@ -1,0 +1,291 @@
+<html>
+    <head>
+        <title>D3 Test</title>
+		<link href="style.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="d3/d3.v2.js"></script>
+    </head>
+    <body>
+		<h1>Capita Selecta: Data visualisation</h1>
+		<div><button id="button">Reset</button></div>
+		<script type="text/javascript">
+			var w = 600;
+			var h = 600;
+			var padding = 40;
+			var dataset = [
+                {
+					voornaam: "Erik",
+					height: 186,
+					weight: 77,
+					shoesize: 45
+				},
+				{
+					voornaam: "Niels",
+					height: 181,
+					weight: 53,
+					shoesize: 42
+				},
+				{
+					voornaam: "Geert",
+					height: 200,
+					weight: 75,
+					shoesize: 45
+				},
+				{
+					voornaam: "Glenn",
+					height: 176,
+					weight: 87,
+					shoesize: 42
+				},
+				{
+					voornaam: "Jan",
+					height: 182,
+					weight: 89,
+					shoesize: 42
+				},
+				{
+					voornaam: "Joris",
+					height: 178,
+					weight: 65,
+					shoesize: 41
+				},
+				{
+					voornaam: "Katrien",
+					height: 166,
+					weight: 50,
+					shoesize: 37
+				},
+				{
+					voornaam: "Bram",
+					height: 204,
+					weight: 82,
+					shoesize: 46
+				},
+				{
+					voornaam: "Greet",
+					height: 160,
+					weight: 62,
+					shoesize: 38
+				},
+				{
+					voornaam: "Stijn",
+					height: 178,
+					weight: 63,
+					shoesize: 42
+				},
+				{
+					voornaam: "Robin",
+					height: 182,
+					weight: 75,
+					shoesize: 44
+				},
+				{
+					voornaam: "Ward",
+					height: 185,
+					weight: 82,
+					shoesize: 43
+				},
+				{
+					voornaam: "Anne",
+					height: 168,
+					weight: 65,
+					shoesize: 38
+				}
+              ];
+			var heightScale = d3.scale.linear()
+				.domain([220, 150])
+				.range([0, h-padding]);
+			var weightScale = d3.scale.linear()
+				.domain([40, 100])
+				.range([padding, h]);
+			var shoeScale = d3.scale.linear()
+				.domain([35, 47])
+				.range([5, 30]);
+			
+			var svg = d3.select("body")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);
+			svg.selectAll("circle")
+				.data(dataset)
+				.enter()
+				.append("circle")
+				.attr("cx", function(d) {
+					return padding;
+			   })
+			   .attr("cy", function(d) {
+					return h-padding;
+			   })
+			   .attr("r", function(d) {
+					return 5;
+				})
+				.attr("fill", "rgb(4,90,141)");
+				
+			svg.selectAll("text")
+			   .data(dataset)
+			   .enter()
+			   .append("text")
+			   .text(function(d) {
+					return d.voornaam + "\n" + "(" + d.shoesize + ")";
+			   })
+			   .attr("x", function(d) {
+					return padding;
+			   })
+			   .attr("y", function(d) {
+					return h-padding;
+			   })
+			   .attr("font-family", "sans-serif")
+			   .attr("font-size", "11px")
+			   .attr("fill", "rgb(0,0,0)")
+			   .attr("text-anchor", "middle");
+				
+			var xAxis = d3.svg.axis()
+				.scale(weightScale)
+				.orient("bottom");
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0," + (h-padding) + ")")
+				.call(xAxis);
+			var yAxis = d3.svg.axis()
+				.scale(heightScale)
+				.orient("left");
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + padding + ",0)")
+				.call(yAxis);
+				
+			svg.selectAll("circle")
+				.data(dataset)
+				.transition()
+				.attr("cx", function(d) {
+					return weightScale(d.weight);
+			   })
+				.attr("cy", function(d) {
+					return heightScale(d.height);
+			   })
+				.attr("r", function(d) {
+					return shoeScale(d.shoesize);
+				})
+				.attr("fill", function(d) {
+					var bmi = d.weight/Math.pow(d.height/100,2);
+					if(bmi < 18.5){
+						return "rgb(158, 202, 225)";
+					} else if(bmi < 25){
+						return "rgb(161, 217, 155)";
+					} else if(bmi < 30){
+						return "rgb(253, 174, 107)";
+					} else{
+						return "rgb(222, 45, 38)";
+					}
+				})
+				.duration(500)
+				.delay(100);
+				
+			svg.selectAll("text")
+				.data(dataset)
+				.transition()
+				.attr("x", function(d) {
+					return weightScale(d.weight);
+			   })
+				.attr("y", function(d) {
+					return heightScale(d.height);
+			   })
+			   .duration(1000)
+			   .delay(350);
+			   
+			/*d3.select("body")
+				.append("button")
+				.attr("id", "b");
+			var but = d3.select("#b");*/
+			
+			var but = d3.select("body").select("button");
+			   
+			but.on("click", function() {
+				var value = but.text();
+				if(value == "Reset"){
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+						.attr("x", function(d) {
+							return padding;
+					   })
+						.attr("y", function(d) {
+							return h-padding;
+					   })
+					   .duration(1000)
+					   .delay(350);
+					svg.selectAll("circle")
+						.data(dataset)
+						.transition()
+						.attr("cx", function(d) {
+							return padding;
+					   })
+						.attr("cy", function(d) {
+							return h-padding;
+					   })
+						.attr("r", function(d) {
+							return 5;
+						})
+						.attr("fill", function(d) {
+							var bmi = d.weight/Math.pow(d.height/100,2);
+							if(bmi < 18.5){
+								return "rgb(158, 202, 225)";
+							} else if(bmi < 25){
+								return "rgb(161, 217, 155)";
+							} else if(bmi < 30){
+								return "rgb(253, 174, 107)";
+							} else{
+								return "rgb(222, 45, 38)";
+							}
+						})
+						.duration(500)
+						.delay(100);
+					but.text("Transition");
+				} else{
+					svg.selectAll("text")
+						.data(dataset)
+						.transition()
+						.attr("x", function(d) {
+							return weightScale(d.weight);
+					   })
+						.attr("y", function(d) {
+							return heightScale(d.height);
+					   })
+					   .duration(1000)
+					   .delay(350);
+					svg.selectAll("circle")
+						.data(dataset)
+						.transition()
+						.attr("cx", function(d) {
+							return weightScale(d.weight);
+						})
+						.attr("cy", function(d) {
+							return heightScale(d.height);
+						})
+						.attr("r", function(d) {
+							return shoeScale(d.shoesize);
+						})
+						.attr("fill", function(d) {
+							var bmi = d.weight/Math.pow(d.height/100,2);
+							if(bmi < 18.5){
+								return "rgb(158, 202, 225)";
+							} else if(bmi < 25){
+								return "rgb(161, 217, 155)";
+							} else if(bmi < 30){
+								return "rgb(253, 174, 107)";
+							} else{
+								return "rgb(222, 45, 38)";
+							}
+						})
+						.duration(500)
+						.delay(100);
+					but.text("Reset");
+				}
+			});
+		</script>
+		<p>
+		The x-axis contains the weight of the person and goes from 40 to 100 kg. <br>
+		The y-axis contains the height of the person and goes from 150 to 220 cm. <br>
+		The radius of the circles are the persons shoesize.
+		</p>
+    </body>
+</html>  
